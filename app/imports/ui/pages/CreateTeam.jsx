@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Grid, Segment, Header, Loader } from 'semantic-ui-react';
 import {
   AutoForm,
@@ -62,7 +63,7 @@ class CreateTeam extends React.Component {
     const toolsArray = this.props.tools;
     const toolsObject = [];
 
-    const owner = this.props.developer[0].slugID;
+    const owner = this.props.developer.find(currUser => currUser.username === Meteor.user().username);
     // Pulls only the first developer from collection instead of the logged in developer who made the team.
 
     let {
