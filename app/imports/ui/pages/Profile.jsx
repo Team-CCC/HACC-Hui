@@ -48,7 +48,7 @@ class Profile extends React.Component {
     const currentUser = this.props.developers.find(currUser => currUser.username === this.props.currentUser);
     const formSchema = new SimpleSchema2Bridge(Developers.getSchema());
     return (
-        <Container style={{ height: '1500px' }}>
+        <Container>
           <div id='cover-photo'>
             <Grid id='grid-style'>
               <Grid.Column width={8} style={{ paddingLeft: '6em' }}>
