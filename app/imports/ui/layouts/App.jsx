@@ -11,7 +11,6 @@ import ListStuff from '../pages/ListStuff';
 import Profile from '../pages/Profile';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
 import AddStuff from '../pages/AddStuff';
-import CreateTeam from '../pages/CreateTeam';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
@@ -35,7 +34,6 @@ class App extends React.Component {
               <ProtectedRoute path="/list" component={ListStuff}/>
               <ProtectedRoute path="/profile" component={Profile}/>
               <ProtectedRoute path="/add" component={AddStuff}/>
-              <ProtectedRoute path="/create" component={CreateTeam}/>
               <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
               <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
               <ProtectedRoute path="/signout" component={Signout}/>
