@@ -11,31 +11,55 @@ import { Tools } from '../../api/tool/ToolCollection';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
 import { Interests } from '../../api/interest/InterestCollection';
 import { Developers } from '../../api/user/DeveloperCollection';
+import { updateMethod } from '../../api/base/BaseCollection.methods';
 import Skill from '../components/Skill';
 import Tool from '../components/Tool';
 import Challenge from '../components/Challenge';
 import Interest from '../components/Interest';
-// import EditProfile from '../components/EditProfile';
 
 class Profile extends React.Component {
 
-  state = { open: false }
+  constructor() {
+    super();
+    this.state = { open: false };
+  }
 
   open = () => this.setState({ open: true })
 
   close = () => this.setState({ open: false })
 
-  submit = (data) => {
+  submit(data) {
+    // eslint-disable-next-line no-console
+    console.log('On Submit');
+    // eslint-disable-next-line no-console
+    console.log(data);
     const { username, slugID, firstName, lastName, demographicLevel, linkedIn, gitHub, website, aboutMe,
       userID, lookingForTeam, isCompliant, _id } = data;
-    Developers.update(_id, { $set: { username, slugID, firstName, lastName, demographicLevel,
-      linkedIn, gitHub, website, aboutMe, userID, lookingForTeam, isCompliant } }, (error) => (error ?
+    const updateData = {
+      id: _id,
+      username,
+      slugID,
+      firstName,
+      lastName,
+      demographicLevel,
+      linkedIn,
+      gitHub,
+      website,
+      aboutMe,
+      userID,
+      lookingForTeam,
+      isCompliant,
+    };
+    updateMethod.call({ collectionName: Developers.getCollectionName(),
+        updateData }, (error) => (error ?
         swal('Error', error.message, 'error') :
         swal('Success', 'Item updated successfully', 'success')));
   }
 
   componentDidMount() {
-    console.log('User email');
+    // eslint-disable-next-line no-console
+    console.log('Did mount');
+    // eslint-disable-next-line no-console
     console.log(this.props.developers.filter(currUser => currUser.username === this.props.currentUser));
   }
 
@@ -64,27 +88,31 @@ class Profile extends React.Component {
                             open={this.state.open}
                         >
                           <Modal.Header>Edit Profile</Modal.Header>
-                          <Modal.Content scrolling>
                             {/* <EditProfile handleClick={this.submit}/> */}
-                            <AutoForm schema={formSchema} onSubmit={data => this.submit(data)} model={this.props.doc}>
-                              <TextField name='username' value={currentUser.username} disabled/>
-                              <HiddenField name='slugID' value={currentUser.slugID} disabled/>
-                              <TextField name='firstName' placeholder={currentUser.firstName}/>
-                              <TextField name='lastName' placeholder={currentUser.lastName}/>
-                              <LongTextField name='aboutMe' placeholder={currentUser.aboutMe}/>
-                              <TextField name='website' placeholder={currentUser.website}/>
-                              <TextField name='gitHub' placeholder={currentUser.gitHub}/>
-                              <TextField name='linkedIn' placeholder={currentUser.linkedIn}/>
-                              <SubmitField value='Submit'/>
-                              <ErrorsField/>
-                            </AutoForm>
+                          <Modal.Content scrolling>
+                          <AutoForm schema={formSchema} onSubmit={data => this.submit(data)} model={this.props.doc}>
+                            <TextField name='username' disabled/>
+                            <HiddenField name='slugID' disabled/>
+                            <TextField name='firstName' placeholder={currentUser.firstName}/>
+                            <TextField name='lastName' placeholder={currentUser.lastName}/>
+                            <LongTextField name='aboutMe' placeholder={currentUser.aboutMe}/>
+                            <TextField name='website' placeholder={currentUser.website}/>
+                            <TextField name='gitHub' placeholder={currentUser.gitHub}/>
+                            <TextField name='linkedIn' placeholder={currentUser.linkedIn}/>
+                            {// eslint-disable-next-line no-console
+                              console.log('On Change')}
+                            {// eslint-disable-next-line no-console,max-len
+                              console.log(this.props.developers.find(currUser => currUser.username === this.props.currentUser))}
+                            <SubmitField value='Submit'/>
+                            <ErrorsField/>
+                          </AutoForm>
                           </Modal.Content>
-                           <Modal.Actions>
+                          <Modal.Actions>
                             <Button
-                                content="Ok"
-                                color='teal'
-                                onClick={this.close}/>
-                           </Modal.Actions>
+                              content="Ok"
+                              color='teal'
+                              onClick={this.close}/>
+                          </Modal.Actions>
                         </Modal>
                       </Item.Header>
                       <Label.Group size='medium' id='interest-style'>

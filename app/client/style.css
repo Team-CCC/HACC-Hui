@@ -75,9 +75,8 @@
 }
 
 #name-edit-icon {
-  float: right;
-  padding-right: 35px;
-  padding-top: 9px;
+  padding-left: 10px;
+  padding-top: 3px;
 }
 
 #choice-style {
@@ -114,6 +113,6 @@
 }
 
 #interest-style {
-  padding-top: 40px;
+  padding-top: 35px;
   padding-left: 175px;
 }
