@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Dropdown, Header } from 'semantic-ui-react';
+import { Menu, Dropdown, Button, Header } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 import { ROLE } from '../../api/role/Role';
 import { ROUTES } from '../../startup/client/route-constants';
@@ -28,12 +28,18 @@ class NavBar extends React.Component {
           {isDeveloper ? (
               [<Menu.Item as={NavLink} activeClassName="active" exact
                           to={ROUTES.CREATE_TEAM} key='team-creation'>Create a Team</Menu.Item>,
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.EDIT_PROFILE} key='edit-profile'>Edit
+                  Your Profile</Menu.Item>,
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.LIST_TEAMS} key='list-teams'>List the
+                  Teams</Menu.Item>,
               ]
           ) : ''}
           {isAdmin ? (
               [
                 <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.CONFIGURE_HACC}
                            key={ROUTES.CONFIGURE_HACC}>Configure HACC</Menu.Item>,
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.DUMP_DATABASE}
+                           key={ROUTES.DUMP_DATABASE}>Dump Database</Menu.Item>,
               ]
           ) : ''}
           <Menu.Item position="right">
@@ -62,6 +68,7 @@ class NavBar extends React.Component {
 // Declare the types of all properties.
 NavBar.propTypes = {
   currentUser: PropTypes.string,
+  subscriptions: PropTypes.object,
 };
 
 // withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker

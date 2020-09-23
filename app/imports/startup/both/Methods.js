@@ -1,9 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
-import { demographicLevels } from '../../api/level/Levels';
 import { Developers } from '../../api/user/DeveloperCollection';
-import { makeSampleSkillSlugArray } from '../../api/skill/SampleSkills';
-import { DeveloperSkills } from '../../api/user/DeveloperSkillCollection';
 
 const accountDeleteMethod = 'Account.delete';
 
@@ -40,31 +36,3 @@ Meteor.methods({
 });
 
 export { developerDeleteMethod };
-
-/* eslint prefer-arrow-callback: "off", no-unused-expressions: "off" */
-/* eslint-env mocha */
-const dummyDeveloperMethod = 'Developer.add';
-
-Meteor.methods({
-  'Developer.add'() {
-  const owner = Meteor.user().username;
-if (Meteor.isServer) {
-  describe('DeveloperCollection', function testSuite() {
-    it('Define', function test() {
-      const username = owner;
-      const firstName = 'dev1';
-      const lastName = 'dev1Surname';
-      const demographicLevel = demographicLevels[0];
-      const lookingForTeam = true;
-      const skills = makeSampleSkillSlugArray(2);
-      const { profileID } = Developers.define({ username, firstName, lastName, demographicLevel,
-        lookingForTeam, skills });
-      expect(Developers.isDefined(profileID)).to.be.true;
-      expect(DeveloperSkills.find({ developerID: profileID }).fetch()).to.have.lengthOf(2);
-    });
-  });
-}
-},
-});
-
-export { dummyDeveloperMethod };

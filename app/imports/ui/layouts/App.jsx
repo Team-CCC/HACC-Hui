@@ -28,6 +28,9 @@ import AddChallenge from '../pages/administrator/AddChallenge';
 import AddSkill from '../pages/administrator/AddSkill';
 import AddTool from '../pages/administrator/AddTool';
 import TeamFinder from '../pages/TeamFinder';
+import DumpDatabase from '../pages/administrator/DumpDatabase';
+import EditProfilePage from '../pages/developer/EditProfilePage';
+import ListTeamsPage from '../pages/developer/ListTeamsPage';
 
 /**
  * Top-level layout component for this application. Called in imports/startup/client/startup.jsx.
@@ -46,7 +49,9 @@ class App extends React.Component {
               <ProtectedRoute path={ROUTES.PARTICIPATION} component={ParticipationForm} />
               <ProtectedRoute path={ROUTES.UNDERAGE_PARTICIPATION} component={UnderParticipationForm} />
               <ProtectedRoute path={ROUTES.CREATE_PROFILE} component={Dprofile} />
+              <ProtectedRoute path={ROUTES.EDIT_PROFILE} component={EditProfilePage} />
               <ProtectedRoute path={ROUTES.CREATE_TEAM} component={TeamCreation} />
+              <ProtectedRoute path={ROUTES.LIST_TEAMS} component={ListTeamsPage} />
               <ProtectedRoute path={ROUTES.DELETE_ACCOUNT} component={DeleteForm} />
               <ProtectedRoute path={ROUTES.FIND_TEAM} component={TeamFinder} />
               <ProtectedRoute path="/list" component={ListStuff} />
@@ -57,6 +62,7 @@ class App extends React.Component {
               <AdminProtectedRoute path={ROUTES.ADD_CHALLENGE} component={AddChallenge} />
               <AdminProtectedRoute path={ROUTES.ADD_SKILL} component={AddSkill} />
               <AdminProtectedRoute path={ROUTES.ADD_TOOL} component={AddTool} />
+              <AdminProtectedRoute path={ROUTES.DUMP_DATABASE} component={DumpDatabase} />
               <ProtectedRoute path={ROUTES.SIGN_OUT} component={Signout} />
               <Route component={NotFound} />
             </Switch>
