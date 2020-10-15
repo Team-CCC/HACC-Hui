@@ -1,4 +1,5 @@
 import React from 'react';
+import { darkerBlueStyle } from '../styles';
 
 /**
  * The Footer appears at the bottom of every page. Rendered by the App Layout component.
@@ -8,7 +9,7 @@ class Footer extends React.Component {
   render() {
     const divStyle = { padding: '3em 0em', color: 'white' };
     return (
-        <footer style={{backgroundColor: '#303846' }}>
+        <footer style={darkerBlueStyle}>
           <div style={divStyle} className="ui center aligned container">
               Department of Information and Computer Sciences <br />
               University of Hawaii<br />

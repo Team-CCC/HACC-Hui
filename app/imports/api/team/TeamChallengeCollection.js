@@ -24,10 +24,10 @@ class TeamChallengeCollection extends BaseCollection {
    * @return {String} the ID of the new pair.
    */
   define({ team, challenge }) {
-    console.log('TeamChallenge.define', team, challenge);
+    // console.log('TeamChallenge.define', team, challenge);
     const teamID = Teams.findIdBySlug(team);
     const challengeID = Challenges.findIdBySlug(challenge);
-    console.log(teamID, challengeID);
+    // console.log(teamID, challengeID);
     return this._collection.insert({ teamID, challengeID });
   }
 
@@ -81,7 +81,7 @@ class TeamChallengeCollection extends BaseCollection {
    * @param userId {String} the user ID.
    */
   assertValidRoleForMethod(userId) {
-    this.assertRole(userId, [ROLE.ADMIN, ROLE.DEVELOPER]);
+    this.assertRole(userId, [ROLE.ADMIN, ROLE.PARTICIPANT]);
   }
 
 }

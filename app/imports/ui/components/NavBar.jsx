@@ -26,36 +26,29 @@ class NavBar extends React.Component {
 
   render() {
     const isAdmin = this.props.currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN);
-    const isDeveloper = this.props.currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.DEVELOPER);
-    const menuStyle = { marginBottom: '10px' };
-    if (isDeveloper) {
-    //   console.log(`this.props.teams`);
-    //   console.log(this.props.teams);
-    //   console.log(`this.props.teamDevelopers`);
-    //   console.log(this.props.teamDevelopers);
-    //   console.log(`Meteor.userID`);
-    //   console.log(Meteor.userId());
-    //   const developer = Developers.findDoc({ userID: Meteor.userId() });
-    //   console.log(`developer`);
-    //   console.log(developer);
-    }
-    // this.props.teamDevelopers.filter(teamDeveloper => {
-    //   (teamDeveloper.developerID === this.props.currentUser)
-    //   }
-    // )
+    const isParticipant = this.props.currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.PARTICIPANT);
 
     return (
-        <Menu style={menuStyle} attached="top" borderless stackable inverted>
+        <Menu attached="top" borderless inverted className={'navBar'} >
           <Menu.Item as={NavLink} activeClassName="" exact to={ROUTES.LANDING}>
             <Header inverted as='h1'>HACC-Hui</Header>
           </Menu.Item>
-          {isDeveloper ? (
+          {isParticipant ? (
               [<Menu.Item as={NavLink} activeClassName="active" exact
                           to={ROUTES.CREATE_TEAM} key='team-creation'>Create a Team</Menu.Item>,
-                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.EDIT_PROFILE} key='edit-profile'>Edit
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.YOUR_PROFILE} key='edit-profile'>
                   Your Profile</Menu.Item>,
                 <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.LIST_TEAMS} key='list-teams'>List the
                   Teams</Menu.Item>,
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.YOUR_TEAMS} key='your-teams'>Your
+                  Teams</Menu.Item>,
+                // eslint-disable-next-line max-len
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.LIST_PARTICIPANTS} key='list-participants'>List the
+                Participants</Menu.Item>,
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.SUGGEST_TOOL_SKILL} key='suggest-tool-skill'>Suggest Tool/Skill</Menu.Item>,
+                <Menu.Item as={NavLink} activeClassName="active"
+                           exact to={ROUTES.TEAM_INVITATIONS} key='team-invitations'>
+                  Your Invitations</Menu.Item>,
               ]
           ) : ''}
           {isDeveloper && getUsersTeams(Meteor.userId()).length > 0 ? (
@@ -78,6 +71,8 @@ class NavBar extends React.Component {
               [
                 <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.CONFIGURE_HACC}
                            key={ROUTES.CONFIGURE_HACC}>Configure HACC</Menu.Item>,
+                <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.LIST_SUGGESTIONS}
+                           key={ROUTES.LIST_SUGGESTIONS}>Suggestions List</Menu.Item>,
                 <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.DUMP_DATABASE}
                            key={ROUTES.DUMP_DATABASE}>Dump Database</Menu.Item>,
               ]
@@ -93,7 +88,7 @@ class NavBar extends React.Component {
                 <Dropdown text={this.props.currentUser} pointing="top right" icon={'user'}>
                   <Dropdown.Menu>
                     <Dropdown.Item icon="sign out" text="Sign Out" as={NavLink} exact to={ROUTES.SIGN_OUT} />
-                    {isDeveloper ? (
+                    {isParticipant ? (
                         <Dropdown.Item icon="user delete" text="Delete Account" as={NavLink} exact
                                        to={ROUTES.DELETE_ACCOUNT} />) : ''}
                   </Dropdown.Menu>

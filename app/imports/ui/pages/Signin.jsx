@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Container, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 import { ROLE } from '../../api/role/Role';
-import { Developers } from '../../api/user/DeveloperCollection';
+import { Participants } from '../../api/user/ParticipantCollection';
 import { ROUTES } from '../../startup/client/route-constants';
 
 /**
@@ -35,7 +35,7 @@ class Signin extends React.Component {
       if (err) {
         this.setState({ error: err.reason });
       } else {
-        let role = ROLE.DEVELOPER;
+        let role = ROLE.PARTICIPANT;
         if (Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN)) {
           role = ROLE.ADMIN;
         }
@@ -47,10 +47,11 @@ class Signin extends React.Component {
 
   // Render the signin form.
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     let pathname = ROUTES.LANDING;
-    if (Developers.isDefined(Meteor.userId())) {
-      const dev = Developers.findDoc({ userID: Meteor.userId() });
+    if (Participants.isDefined(Meteor.userId())) {
+      const dev = Participants.findDoc({ userID: Meteor.userId() });
+      // console.log(dev);
       if (dev.isCompliant) {
         pathname = ROUTES.CREATE_PROFILE;
       } else {

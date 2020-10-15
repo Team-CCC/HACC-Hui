@@ -1,6 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import BaseCollection from '../base/BaseCollection';
-import { Developers } from '../user/DeveloperCollection';
+import { Participants } from '../user/ParticipantCollection';
 import { Teams } from './TeamCollection';
 import { ROLE } from '../role/Role';
 
@@ -9,36 +9,34 @@ class WantToJoinCollection extends BaseCollection {
   constructor() {
     super('WantToJoin', new SimpleSchema({
       teamID: { type: SimpleSchema.RegEx.Id },
-      developerID: { type: SimpleSchema.RegEx.Id },
+      participantID: { type: SimpleSchema.RegEx.Id },
     }));
   }
 
   /**
-   * Defines a developer - team pair indicating the developer wishes to join the team.
+   * Defines a participant - team pair indicating the participant wishes to join the team.
    * @param team {String} team slug or ID.
-   * @param developer {String} developer slug or ID.
+   * @param participant {String} participant slug or ID.
    * @return {String} the ID of the pair.
    */
-  define({ team, developer }) {
+  define({ team, participant }) {
     const teamID = Teams.getID(team);
-    const developerID = Developers.getID(developer);
-    console.log(`teamID = ${teamID}`);
-    console.log(`developerID = ${developerID}`);
-    return this._collection.insert({ teamID, developerID });
+    const participantID = Participants.getID(participant);
+    return this._collection.insert({ teamID, participantID });
   }
 
   /**
-   * Updates the given team-developer pair.
+   * Updates the given team-participant pair.
    * @param docID {String} the ID of the pair to update.
    * @param team {String} the slug or ID of the team (optional).
-   * @param developer {String} the slug or ID of the developer (optional).
+   * @param participant {String} the slug or ID of the participant (optional).
    * @throws {Meteor.Error} if docID is undefined.
    */
-  update(docID, { team, developer }) {
+  update(docID, { team, participant }) {
     this.assertDefined(docID);
     const updateData = {};
-    if (developer) {
-      updateData.developerID = Developers.getID(developer);
+    if (participant) {
+      updateData.participantID = Participants.getID(participant);
     }
     if (team) {
       updateData.teamID = Teams.getID(team);
@@ -47,7 +45,7 @@ class WantToJoinCollection extends BaseCollection {
   }
 
   /**
-   * Removes the developer-team pair.
+   * Removes the participant-team pair.
    * @param docID {String} the ID to remove.
    */
   removeIt(docID) {
@@ -55,13 +53,13 @@ class WantToJoinCollection extends BaseCollection {
   }
 
   /**
-   * Removes all the pairs with the given developer.
-   * @param developer {String} the slug or ID of the developer.
-   * @throws {Meteor.Error} if the developer is undefined.
+   * Removes all the pairs with the given participant.
+   * @param participant {String} the slug or ID of the participant.
+   * @throws {Meteor.Error} if the participant is undefined.
    */
-  removeDeveloper(developer) {
-    const developerID = Developers.getID(developer);
-    this._collection.remove({ developerID });
+  removeParticipant(participant) {
+    const participantID = Participants.getID(participant);
+    this._collection.remove({ participantID });
   }
 
   /**
@@ -75,7 +73,7 @@ class WantToJoinCollection extends BaseCollection {
   }
 
   assertValidRoleForMethod(userId) {
-    this.assertRole(userId, [ROLE.ADMIN, ROLE.DEVELOPER]);
+    this.assertRole(userId, [ROLE.ADMIN, ROLE.PARTICIPANT]);
   }
 
 }

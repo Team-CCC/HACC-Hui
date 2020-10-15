@@ -7,18 +7,20 @@ import { Skills } from '../skill/SkillCollection';
 import { Slugs } from '../slug/SlugCollection';
 import { Teams } from '../team/TeamCollection';
 import { TeamChallenges } from '../team/TeamChallengeCollection';
-import { TeamDevelopers } from '../team/TeamDeveloperCollection';
+import { TeamParticipants } from '../team/TeamParticipantCollection';
 import { TeamSkills } from '../team/TeamSkillCollection';
 import { TeamTools } from '../team/TeamToolCollection';
 import { Tools } from '../tool/ToolCollection';
-import { Developers } from '../user/DeveloperCollection';
-import { DeveloperChallenges } from '../user/DeveloperChallengeCollection';
-import { DeveloperInterests } from '../user/DeveloperInterestCollection';
-import { DeveloperSkills } from '../user/DeveloperSkillCollection';
-import { DeveloperTools } from '../user/DeveloperToolCollection';
+import { Participants } from '../user/ParticipantCollection';
+import { ParticipantChallenges } from '../user/ParticipantChallengeCollection';
+import { ParticipantInterests } from '../user/ParticipantInterestCollection';
+import { ParticipantSkills } from '../user/ParticipantSkillCollection';
+import { ParticipantTools } from '../user/ParticipantToolCollection';
 import { Administrators } from '../user/AdministratorCollection';
 import { SlackUsers } from '../slackbot/SlackUserCollection';
 import { WantsToJoin } from '../team/WantToJoinCollection';
+import { TeamInvitations } from '../team/TeamInvitationCollection';
+import { Suggestions } from '../suggestions/SuggestionCollection';
 
 /** @namespace api/hacc-hui */
 
@@ -30,36 +32,40 @@ class HACCHuiClass {
   constructor() {
     /** Holds all the collections. */
     this.collections = [
-        Administrators,
-        Challenges,
-        ChallengeInterests,
-        Developers,
-        DeveloperChallenges,
-        DeveloperInterests,
-        DeveloperSkills,
-        DeveloperTools,
-        Interests,
-        Skills,
-        SlackUsers,
-        Slugs,
-        Teams,
-        TeamChallenges,
-        TeamDevelopers,
-        TeamSkills,
-        TeamTools,
-        Tools,
-        WantsToJoin,
+      Administrators,
+      Challenges,
+      ChallengeInterests,
+      Participants,
+      ParticipantChallenges,
+      ParticipantInterests,
+      ParticipantSkills,
+      ParticipantTools,
+      Interests,
+      Skills,
+      SlackUsers,
+      Slugs,
+      Teams,
+      TeamChallenges,
+      TeamParticipants,
+      TeamSkills,
+      TeamTools,
+      Tools,
+      WantsToJoin,
+      TeamInvitations,
+      Suggestions,
+
     ];
     /** The load sequence for loading fixtures. */
     this.collectionLoadSequence = [
-        Administrators,
-        Interests,
-        Skills,
-        Tools,
-        Challenges,
-        Developers,
-        Teams,
-        SlackUsers,
+      Administrators,
+      Interests,
+      Skills,
+      Tools,
+      Challenges,
+      Participants,
+      Teams,
+      SlackUsers,
+      Suggestions,
     ];
     /** Maps collection name to the collection. */
     this.collectionAssociation = {};

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { App } from '@slack/bolt';
 import { isAdminEmail } from '../../api/user/helpers';
-import { Developers } from '../../api/user/DeveloperCollection';
+import { Participants } from '../../api/user/ParticipantCollection';
 import { Administrators } from '../../api/user/AdministratorCollection';
 import { SlackUsers } from '../../api/slackbot/SlackUserCollection';
 
@@ -32,87 +32,58 @@ if (!Meteor.isAppTest) {
       });
       console.log(profile);
       const { email, first_name, last_name } = profile;
-      console.log(email, first_name, last_name);
-
-      // DELETE THIS COMMENT WHEN PUSHING CHANGES TO MASTER.  LEAVE IN ORIGINAL BRANCH
-      // let gotName = false;
-      // // don't need to test for a string with only whitespaces because slack doesn't let a user send a string
-      // // with only whitespaces.
-      // const regex = /[ 'ĀāĒēĪīŌōŪūa-zA-Z._-]*/;
-      // let firstNameTemp = '';
-      // let lastNameTemp = '';
-      //
-      // while (!gotName) {
-      //   // eslint-disable-next-line no-loop-func
-      //   app.event('message', async ({ eventFirstName, sayFirstName }) => {
-      //     firstNameTemp = eventFirstName.text.match(regex);
-      //     if (firstNameTemp.length === 0) {
-      //       await sayFirstName(`<@${event.user}> I don't understand '${event.text}'. Names can only contain letters,
-      //                  vowels with macrons (e.g. ā and Ā), periods, underscores, hyphens, apostrophes, and spaces.
-      //                  Please re-enter your first name.`);
-      //     } else {
-      //       gotName = true;
-      //       console.log(`${event.user}'s first name is ${firstNameTemp}`);
-      //     }
-      //   });
-      // }
-      //
-      // gotName = false;
-      // while (!gotName) {
-      //   // eslint-disable-next-line no-loop-func
-      //   app.event('message', async ({ eventLastName, sayLastName }) => {
-      //     lastNameTemp = eventLastName.text.match(regex);
-      //     if (lastNameTemp.length === 0) {
-      //       await sayLastName(`<@${event.user}> I don't understand '${event.text}'. Names can only contain letters,
-      //                  vowels with macrons (e.g. ā and Ā), periods, underscores, hyphens, apostrophes, and spaces.
-      //                  Please re-enter your first name.`);
-      //     } else {
-      //       gotName = true;
-      //       console.log(`${event.user}'s last name is ${lastNameTemp}`);
-      //     }
-      //   });
-      // }
-
-      if (!isAdminEmail(email)) { // they are a developer
-        console.log('is developer');
-        if (!Developers.isDefined(email)) {
-          // Slack requires a first name so we don't have to check it
-          const firstName = first_name;
-          // Slack doesn't require a last name so we have to check it
-          const lastName = (last_name.length > 0) ? last_name : '[insert last name]';
-          const username = email;
-          const { password } = Developers.define({ username, firstName, lastName });
-          // record this user
-          SlackUsers.define({ username, slackUser: event.user, dmChannel: event.channel });
-          await say(`
-      Welcome to HACC-Hui! Here are your credentials
-      Host: https//hackhui.com
-      Username: ${username}
-      Password: ${password}`);
+      // console.log(email, first_name, last_name);
+      if (!isAdminEmail(email)) { // they are a participant
+        if (!Participants.isDefined(email)) {
+          if (last_name !== '') { // last name is provided
+            const firstName = first_name;
+            const lastName = last_name;
+            const username = email;
+            const { password } = Participants.define({ username, firstName, lastName });
+            // record this user
+            SlackUsers.define({ username, slackUser: event.user, dmChannel: event.channel });
+            await say(`
+        Welcome to HACC-Hui! Here are your credentials
+        Host: https//hackhui.com
+        Username: ${username}
+        Password: ${password}`);
+          } else {
+            await say(`<@${event.user}> Please include a last name with your profile.
+You can do this by going to 'edit profile' and entering your full name under 'Full name' then try to register again.`);
+          }
         } else {
           await say(`<@${event.user}> You've already registered. You can login to HACC-Hui.`);
         }
       } else
         if (!Administrators.isDefined(email)) {
-          console.log('is admin');
-          // Slack requires a first name so we don't have to check it
-          const firstName = first_name;
-          // Slack doesn't require a last name so we have to check it
-          const lastName = (last_name.length > 0) ? last_name : '[insert last name]';
-          const username = email;
-          const { password } = Administrators.define({ username, firstName, lastName });
-          // record this user
-          SlackUsers.define({ username, slackUser: event.user, dmChannel: event.channel });
-          await say(`
-      Welcome to HACC-Hui! Here are your credentials
-      Host: https//hackhui.com
-      Username: ${username}
-      Password: ${password}`);
+          if (last_name !== '') { // last name is provided
+            const firstName = first_name;
+            const lastName = last_name;
+            const username = email;
+            const { password } = Administrators.define({ username, firstName, lastName });
+            // record this user
+            SlackUsers.define({ username, slackUser: event.user, dmChannel: event.channel });
+            await say(`
+        Welcome to HACC-Hui! Here are your credentials
+        Host: https//hackhui.com
+        Username: ${username}
+        Password: ${password}`);
+          } else {
+            await say(`<@${event.user}> Please include a last name with your profile.
+You can do this by going to 'edit profile' and entering your full name under 'Full name' then try to register again.`);
+          }
         } else {
           await say(`<@${event.user}> You've already registered. You can login to HACC-Hui.`);
         }
-    } else {
-      await say(`<@${event.user}> I don't understand '${event.text}'. To register say register me.`);
+    }
+    else if(event.text.includes('help')){
+      //url = '/signin';
+      /* Could we add a hyperlink into slack? Need to check Slack API */
+      //Need to wait for help page issue to be complete, talk to moore about this
+      await say(`<@${event.user}> I can see that you need help, please refer to our help page at: [temp url]`);
+    }
+    else {
+      await say(`<@${event.user}> I don't understand '${event.text}'. To register say register me. If you need help say help me.`);
     }
   });
 
